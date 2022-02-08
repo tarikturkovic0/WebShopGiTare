@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title><%= title %></title>
+    <script>
+      function provjera(){
+        if(document.getElementById('komentarinput').value == ""){
+          alert('Komentar ne može biti prazan.');
+        }
+        else if(document.getElementById('komentarinput').value.length >=600){
+          alert('Komentar predug.');
+        }
+        else{
+          alert('Ako imate raniju recenziju za ovaj artikal, ona ce biti obrisana.');
+          document.getElementById('formaKomentar').submit();
+        }
+      }
+    </script>
+    <link rel='stylesheet' href='/stylesheets/styleArtikal.css' />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="icon" href="/images/favicon.ico">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div id="vrhstr" class="top top-fixed">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #171616;">
+      <a class="navbar-brand" href="/home"><img src="/images/giTareLogo.png" width="100px"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+          </li>
+        </ul>
+        <form id="formaSearch" action="/home" method="post" class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" name="pretraga" id="pretraga" placeholder="Pretraga" aria-label="Pretraga">
+          <button class="btn btn-danger" style="background-color: grey; border-color: black;" onclick="validacija()">Traži</button>
+        </form>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <div class="collapse navbar-collapse profilnaHome" id="navbar-list-4">
+              <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/images/profilne/<%=kuki.naziv_profilne%>" width="40" height="40" class="rounded-circle">
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/mojProfil/<%=kuki.id%>">Moj profil</a>
+                    <a class="dropdown-item" href="/urediProfil/<%=kuki.id%>">Uredi profil</a>
+                    <%if(kuki.status != 'Arhiviran'){%>
+                      <a class="dropdown-item" href="/poruke">Poruke</a>
+                    <%}%>
+                    <% if(kuki.tip === 'Trgovac'){%>
+                    <a class="dropdown-item" href="/dodajArtikal">Dodaj artikal</a>
+                    <a class="dropdown-item" href="/artikli/<%=kuki.id%>">Moji artikli</a>
+                    <a class="dropdown-item" href="/narudzbe/<%=kuki.id%>">Narudžbe</a>
+
+                    <%}%>
+                    <% if(kuki.tip === 'Administrator'){%>
+                      <a class="dropdown-item" href="/dodajPodkategoriju">Dodaj podkategoriju</a>
+                      <a class="dropdown-item" href="/statistika">Statistika</a>
+
+                    <%}%>
+                    <% if(kuki.tip === 'Kupac'){%>
+                    <a class="dropdown-item" href="/korpa/<%=kuki.id%>">Moja korpa</a>
+                    <a class="dropdown-item" href="/stanjaNarudzbi/<%=kuki.id%>">Narudžbe</a>
+                    <%}%>
+                    <a class="dropdown-item" href="/odjava">Odjavi se</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+
+          </li>
+        </ul>
+
+      </div>
+    </nav>
+  </div>
+  <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
+  <div class="container-fluid mt-2 mb-3">
+    <div class="row no-gutters">
+      <div class="col-md-5 pr-2">
+        <div class="card">
+          <div class="demo">
+            <ul id="lightSlider">
+              <%for(let i = 0; i < slike.length-1; i++){%>
+              <li class="cao" data-thumb="/images/artikli/<%=slike[i]%>"> <img class="fotke" src="/images/artikli/<%=slike[i]%>" /> </li>
+              <%}%>
+            </ul>
+          </div>
+        </div>
+        <div class="card mt-2">
+          <h6>Recenzije</h6>
+          <div class="d-flex flex-row">
+            <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+            <%if(brojrecenzija != 0){%>
+            <p style="font-size:15px;" class="font-weight-bold"><%=prosjecnaocjena.toFixed(1)%></p><br>
+            <%}%>
+            <%if(brojrecenzija == 0){%>
+            <p style="font-size:15px;" class="font-weight-bold">Nema postojećih recenzija za ovaj artikal.</p><br>
+            <%}%>
+          </div>
+          <%if(brojrecenzija != 0){%>
+          <p style="font-size:15px;" class="font-weight-bold">od <%=brojrecenzija%> korisnika.</p>
+          <%}%>
+          <hr>
+          <div class="comment-section">
+            <%if(kuki.tip == 'Kupac'){%>
+            <%if(kuki.status != 'Arhiviran'){%>
+
+            <h3>Unesi komentar: </h3>
+                <form method="post" name="formaKomentar" id="formaKomentar">
+                  <textarea value="" maxlength="599" style="height:70px; width:500px;" id="komentarinput" name="komentarinput"></textarea><br>
+                  <p style="font-size: 15px; " class="font-weight-bold">Unesite ocjenu: </p>
+                  <input type="number" min="1" max="5" name="ocjena" value="1"><br><br>
+                  <button onclick="provjera()" class="btn btn-dark">Predaj</button>
+                </form>
+            <br><br>
+            <%}%>
+            <%}%>
+              <%if(brojrecenzija != 0){%>
+              <h3>Komentari i recenzije: </h3><br><hr>
+              <%for(let i = 0; i<komentari.length; i++){%>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex flex-row align-items-center">
+                <div class="d-flex flex-column ml-1 comment-profile">
+                  <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span style="font-size: 16px;" class="username"><a style="color: black; text-decoration: none;" href="/korisnik/<%=korisniciKomentara[i].id_korisnika%>"><%=korisniciKomentara[i].nadimak%></a></span>
+                  <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span style="font-size: 13px;" class="ocjena">Ocjena: <%=ocjene[i]%></span>
+                  <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span style="font-size: 13px;" class="komentar"><%=komentari[i].sadrzaj%></span>
+                  <%if(korisniciKomentara[i].id_korisnika == kuki.id){%>
+                  <br>
+                  <a href="/obrisiKomentar/<%=artikal.id_artikla%>/<%=kuki.id%>"><button class="btn btn-warning btn-long buy">Obrisi recenziju</button></a>
+                  <br>
+                  <%}%>
+                </div>
+              </div>
+              <div class="date"> <span class="text-muted"><%=komentari[i].datum.getDate() + '.' + (komentari[i].datum.getMonth()+1) + '.' + komentari[i].datum.getFullYear() + '.'%></span> </div>
+
+            </div>
+              <br><br><hr>
+
+              <%}%>
+              <%}%>
+            <hr>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="card">
+          <div class="about"> <span class="font-weight-bold"><b><h1><%=artikal.naziv_artikla%> </h1> </b></span>
+            <h2 class="font-weight-bold"><%=artikal.cijena%>KM</h2>
+            <br><br>
+            <h3>Kategorija: <%=podkategorija%></h3>
+            <br><br>
+            <h3>Stanje: <%=artikal.stanje%></h3>
+            <br>
+            <h4>Vrijeme objave:</h4>
+            <h4><%=datum%> <%=vrijeme%></h4>
+            <h4>Broj pregleda: <%=brojpregleda%></h4>
+
+          </div>
+          <div class="buttons">
+            <%if(kuki.tip == 'Kupac'){%>
+            <%if(kuki.status != 'Arhiviran'){%>
+            <a href="/dodajUKorpu/<%=artikal.id_artikla%>"><button class="btn btn-outline-warning btn-long cart">Dodaj u korpu</button></a>
+            <a href="/kupiOdmah/<%=artikal.id_artikla%>/<%=kuki.id%>/<%=korisnik.id_korisnika%>"><button class="btn btn-warning btn-long buy">Kupi odmah</button></a>
+            <%}%>
+            <%}%>
+            <%if(kuki.id == korisnik.id_korisnika || kuki.tip == 'Administrator'){%>
+            <%if(kuki.status != 'Arhiviran'){%>
+
+            <a href="/urediArtikal/<%=artikal.id_artikla%>"><button class="btn btn-warning btn-long buy">Uredi artikal</button></a>
+              <a href="/obrisiArtikal/<%=artikal.id_artikla%>"><button class="btn btn-warning btn-long buy">Obriši artikal</button></a>
+            <%}%>
+            <%}%>
+          </div>
+          <hr>
+          <div class="product-description">
+            <div class="mt-2"> <span class="font-weight-bold">Opis</span>
+              <p style="font-size:160%;"><%=artikal.opis_artikla%></p>
+            </div>
+          </div>
+          <div class="profil">
+            <div class="col-md-8 pfpage">
+              <!-- Column -->
+              <div class="card"> <img class="card-img-top" src="/images/naslovne/<%=nas%>" alt="Card image cap">
+                <div style="text-align: center;"><div class="card-body little-profile text-center boksic">
+                  <a href="/korisnik/<%=korisnik.id_korisnika%>"><div class="pro-img"><img class="pfp" src="/images/profilne/<%=pfp%>" alt="user"></div></a>
+                    <a href="/korisnik/<%=korisnik.id_korisnika%>" style="color: white; text-decoration: none;"><h3 class="m-b-0"><%=korisnik.nadimak%></h3></a>
+                    <p><%=korisnik.tip%></p>
+                  <%if(kuki.id != korisnik.id_korisnika){%>
+                    <%if(kuki.status != 'Arhiviran'){%>
+
+                    <a href="/poruke/<%=korisnik.id_korisnika%>" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Pošalji poruku</a>
+                    <%}%>
+                    <%}%>
+                    <%if(kuki.id == korisnik.id_korisnika){%>
+                      <a href="/mojProfil/<%=kuki.id%>" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Moj profil</a>
+                    <%}%>
+                    <br><br>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+  <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
+  <script>
+    $('#lightSlider').lightSlider({
+      gallery: true,
+      item: 1,
+      loop: true,
+      slideMargin: 0,
+      thumbItem: 9
+    });
+  </script>
+
+  <!--bootstrap js-->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <!--/bootstrap js-->
+  </body>
+</html>

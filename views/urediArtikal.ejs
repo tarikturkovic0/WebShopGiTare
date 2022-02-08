@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/styleUrediArtikal.css' />
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="icon" href="/images/favicon.ico">
+    <script>
+
+      function validacija(){
+        if(document.getElementById('naziv').value == ''){
+          document.getElementById('naziv').style.borderColor = 'red';
+          alert('Naziv artikla ne može biti prazan!');
+        }
+        else if(document.getElementById('opis').value == ''){
+          document.getElementById('opis').style.borderColor = 'red';
+          alert('Morate opisati Vaš artikal ili uslugu!');
+        }
+        else if(document.getElementById('selektorKategorije').value == 'x'){
+          document.getElementById('selektorKategorije').style.borderColor = 'red';
+          alert('Pravilno unesite kategoriju!');
+        }
+        else if(document.getElementById('cijena').value == ''){
+          document.getElementById('cijena').style.borderColor = 'red';
+          alert('Unesite cijenu!');
+        }
+        else{
+          document.getElementById('formaArtikal').submit();
+        }
+      }
+
+    </script>
+  </head>
+  <body>
+
+  <div class="position-fixed top-0 start-0"><h5>Naslovna</h5><a href="/home"><img src="/images/nazad.png" width="50px"></a></div>
+
+  <form id="formaArtikal" action="/urediArtikal/<%=artikal.id_artikla%>" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <fieldset>
+      <div style="text-align: center;"><h1>Uredi artikal</h1></div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="naziv">Naziv artikla *</label>
+        <div class="col-md-4">
+          <input id="naziv" name="nazivA" value="<%=artikal.naziv_artikla%>" placeholder="Naziv artikla" class="form-control input-md" required type="text">
+
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="opis">Opis artikla *</label>
+        <div class="col-md-4">
+          <textarea class="form-control" id="opis" name="opisA" style="resize: none;" placeholder="Opis artikla"><%=artikal.opis_artikla%></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="selektorKategorije">Kategorija *</label>
+        <div class="col-md-4">
+          <select class="select form-control" id="selektorKategorije" name="selektorKategorije">
+            <%for(let i = 0; i<listakategorija.length; i++){%>
+            <%if(listakategorija[i].id_podkategorije == artikal.id_podkategorije){%>
+            <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>" selected><%=listakategorija[i].naziv_podkategorije%></option>
+            <%}%>
+            <%if(listakategorija[i].id_podkategorije != artikal.id_podkategorije){%>
+            <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+            <%}%>
+            <%}%>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="kolicina">Količina</label>
+        <div class="col-md-4">
+          <input id="kolicina" name="kolicinaA" value="<%=artikal.kolicina%>" placeholder="Količina" class="form-control input-md" type="number">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="cijena">Cijena *</label>
+        <div class="col-md-4">
+          <input id="cijena" name="cijenaA" value="<%=artikal.cijena%>" placeholder="Cijena" class="form-control input-md" required="" type="number" min="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="stanje">Stanje artikla *</label>
+        <div class="col-md-4">
+          <select class="select form-control" id="selektorStanja" name="selektorStanja" required>
+            <%if(artikal.stanje == 'Usluga'){%>
+              <option value="Usluga" id="non" name="non" selected>Usluga</option>
+            <%}%>
+              <%if(artikal.stanje !='Usluga'){%>
+            <option value="Usluga" id="non" name="non" >Usluga</option>
+              <%}%>
+              <%if(artikal.stanje == 'Novo'){%>
+                <option value="Novo" id="novo" name="novo" selected>Novo</option>
+              <%}%>
+              <%if(artikal.stanje !='Novo'){%>
+            <option value="Novo" id="novo" name="novo">Novo</option>
+              <%}%>
+              <%if(artikal.stanje == 'Korišteno'){%>
+                <option value="Korišteno" id="polovno" name="polovno" selected>Korišteno</option>
+              <%}%>
+              <%if(artikal.stanje !='Korišteno'){%>
+            <option value="Korišteno" id="polovno" name="polovno">Korišteno</option>
+            <%}%>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="col-md-4"><div style="text-align: right;">
+          <button id="dugme" name="dugme" onclick="validacija()" class="btn btn-primary">Uredi artikal</button>
+
+        </div>
+      </div>
+
+  </fieldset>
+  </form>
+  <center><a href="/obrisiArtikal/<%=artikal.id_artikla%>"><button class="btn btn-danger">Obriši artikal</button></a></center>
+
+  </body>
+</html>

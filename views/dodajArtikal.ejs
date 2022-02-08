@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/dodajArtikal.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="icon" href="/images/favicon.ico">
+    <script>
+
+      function validacija(){
+        if(document.getElementById('naziv').value == ''){
+          document.getElementById('naziv').style.borderColor = 'red';
+          alert('Naziv artikla ne može biti prazan!');
+        }
+        if(document.getElementById('naziv').length > 100){
+          document.getElementById('naziv').style.borderColor = 'red';
+          alert('Koristite kraci naziv artikla!');
+        }
+        else if(document.getElementById('opis').value == ''){
+          document.getElementById('opis').style.borderColor = 'red';
+          alert('Morate opisati Vaš artikal ili uslugu!');
+        }
+        else if(document.getElementById('opis').length > 599){
+          document.getElementById('opis').style.borderColor = 'red';
+          alert('Opis mora biti kraci!');
+        }
+
+        else if(document.getElementById('selektorKategorije').value == 'x'){
+          document.getElementById('selektorKategorije').style.borderColor = 'red';
+          alert('Pravilno unesite kategoriju!');
+
+        }
+        else if(document.getElementById('cijena').value == ''){
+          document.getElementById('cijena').style.borderColor = 'red';
+          alert('Unesite cijenu!');
+        }
+        else if(document.getElementById('fotke').length > 10){
+          alert('Najvise 10 fotografija dozvoljeno!');
+        }
+        else if(document.getElementById('fotke').length == 0){
+          alert('Morate ubaciti barem jednu fotografiju!');
+        }
+        else{
+          document.getElementById('formaArtikal').submit();
+        }
+      }
+
+    </script>
+  </head>
+  <body>
+
+
+  <form id="formaArtikal" action="/dodajArtikal" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <fieldset>
+      <div style="text-align: center;"><h1>Dodaj artikal</h1></div>
+      <br><br>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="naziv">Naziv artikla *</label>
+        <div class="col-md-4">
+          <input id="naziv" name="nazivA" placeholder="Naziv artikla" class="form-control input-md" required type="text">
+
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="opis">Opis artikla *</label>
+        <div class="col-md-4">
+          <textarea class="form-control" id="opis" name="opisA" style="resize: none;" placeholder="Opis artikla"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="selektorKategorije">Kategorija *</label>
+        <div class="col-md-4">
+          <select class="select form-control" id="selektorKategorije" name="selektorKategorije">
+            <option value="x" selected disabled>Odaberite kategoriju vašeg artikla *</option>
+            <%for(let i = 0; i<listakategorija.length; i++){%>
+            <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+            <%}%>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="kolicina">Količina</label>
+        <div class="col-md-4">
+          <input id="kolicina" name="kolicinaA" placeholder="Količina" class="form-control input-md" type="number">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="cijena">Cijena (KM)*</label>
+        <div class="col-md-4">
+          <input id="cijena" name="cijenaA" placeholder="Cijena" class="form-control input-md" required="" type="number" min="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="stanje">Stanje artikla *</label>
+        <div class="col-md-4">
+          <select class="select form-control" id="selektorStanja" name="selektorStanja" required>
+            <option value="Usluga" id="non" name="non" selected >Usluga</option>
+            <option value="Novo" id="novo" name="novo">Novo</option>
+            <option value="Korišteno" id="polovno" name="polovno">Korišteno</option>
+          </select>
+        </div>
+      </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="fotke">Dodajte fotografije (od 2 do 10 fotografija dozovljeno)</label>
+            <div class="col-md-4">
+              <input id="fotke" name="fotke" class="input-file" type="file" multiple>
+            </div>
+          </div>
+
+      <div class="col-md-4"><div style="text-align: right;">
+                <button id="dugme" name="dugme" onclick="validacija()" class="btn btn-primary">Dodaj artikal</button>
+        </div>
+      </div>
+
+  </fieldset>
+  </form>
+  </body>
+</html>

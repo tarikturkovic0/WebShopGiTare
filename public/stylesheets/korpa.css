@@ -1,0 +1,12 @@
+.profilnaHome{
+    padding-right: 100px !important;
+}
+.art {
+    color: black !important;
+    text-decoration: none !important;
+    transition: 0.3s !important;
+}
+.art:hover{
+    color: darkgrey !important;
+    text-decoration: none !important;
+}

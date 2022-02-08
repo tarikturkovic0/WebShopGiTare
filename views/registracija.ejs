@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script>
+      function provjeriTip() {
+        if (document.getElementById('selektortipa').value === 'Trgovac') {
+          document.getElementById('dodatne_info').style.display = '';
+          document.getElementById('interesiSelektor').style.display = 'none';
+          return true;
+        } else {
+          document.getElementById('dodatne_info').style.display = 'none';
+          document.getElementById('interesiSelektor').style.display = '';
+          return false;
+        }
+      }
+      function validacija(){
+        if(document.getElementById('ime').value == ''){
+          document.getElementById('ime').style.borderColor = 'red';
+          alert('Ime ne može biti prazno!');
+        }
+        else if(document.getElementById('prezime').value == '') {
+          document.getElementById('prezime').style.borderColor = 'red';
+          alert('Prezime ne može biti prazno!');
+        }
+        else if(document.getElementById('nadimak').value == '') {
+          document.getElementById('nadimak').style.borderColor = 'red';
+          alert('Morate unijeti neki nadimak!');
+        }
+        else if(document.getElementById('sifra').value.length < 8){
+          document.getElementById('sifra').style.borderColor = 'red';
+          alert('Lozinka mora biti duga barem 8 karaktera!');
+        }
+        else if(document.getElementById('sifra').value != document.getElementById('sifrap').value){
+          document.getElementById('sifra').style.borderColor = 'red';
+          document.getElementById('sifrap').style.borderColor = 'red';
+          alert('Pravilno unesite novu lozinku oba puta!');
+        }
+        else if(provjeriTip() && document.getElementById('brtel').value == ''){
+          document.getElementById('brtel').style.borderColor = 'red';
+          alert('Pravilno unesite broj telefona!');
+        }
+        else if(provjeriTip() && document.getElementById('adresa').value == ''){
+          document.getElementById('adresa').style.borderColor = 'red';
+          alert('Pravilno unesite adresu!');
+        }
+        else if(!provjeriTip() && (document.getElementById('sel1').value == document.getElementById('sel2').value || document.getElementById('sel1').value == document.getElementById('sel3').value || document.getElementById('sel2').value == document.getElementById('sel3').value)){
+          document.getElementById('sel1').style.borderColor = 'red';
+          document.getElementById('sel2').style.borderColor = 'red';
+          document.getElementById('sel3').style.borderColor = 'red';
+
+          alert('Odaberite tri validna interesa!');
+        }
+        else{
+          document.getElementById('formareg').submit();
+        }
+
+      }
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="icon" href="/images/favicon.ico">
+
+  </head>
+  <body>
+  <section class="vh-100" style="background-color: #240204;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="animate__animated animate__fadeInDown col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registracija</p>
+
+                  <form name="formareg" id="formareg" encType="multipart/form-data" action="/registracija" method="post" class="mx-1 mx-md-4">
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="text" id="ime" name="ime_unos" class="form-control" required/>
+                        <label class="form-label" for="form3Example1c">Ime</label>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="text" id="prezime" name="prezime_unos" class="form-control" required/>
+                        <label class="form-label" for="form3Example1c">Prezime</label>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="text" id="nadimak" name="nadimak_unos" class="form-control" required/>
+                        <label class="form-label" for="form3Example1c">Nadimak</label>
+                      </div>
+                    </div>
+                    <select onchange='provjeriTip()' class="select form-control-lg" id="selektortipa" name="selektortipa">
+                      <option value="1" selected disabled>Odaberite vaš tip računa</option>
+                        <option value="Kupac" id="kup" name="kupac">Kupac</option>
+                        <option value="Trgovac" id="trg" name="kupac">Trgovac</option>
+                    </select><br><br>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="email" id="email" name="email_unos" class="form-control" required/>
+                        <label class="form-label" for="form3Example3c">Email</label>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="password" id="sifra" name="sifra_unos" class="form-control" required/>
+                        <label class="form-label" for="form3Example4c">Lozinka</label>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="password" id="sifrap" name="sifrap_unos" class="form-control" required/>
+                        <label class="form-label" for="form3Example4cd">Ponovi lozinku</label>
+                      </div>
+                    </div>
+                    <label class="form-label" for="slika">Ubaci profilnu</label>
+                    <input name="fotka" id="slika" type="file" />
+                    <br><br>
+                    <div id="interesiSelektor" style="display: none" class="row">
+                      <div class="col-12">
+
+                        <select class="select form-control-lg" id="sel1" name="selektor1">
+                          <option value="x" selected disabled>Odaberi prvi interes</option>
+                          <%for(let i = 0; i<listakategorija.length; i++){%>
+                          <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+                          <%}%>
+                        </select>
+                        <select class="select form-control-lg" id="sel2" name="selektor2">
+                          <option value="x" selected disabled>Odaberi drugi interes</option>
+                          <%for(let i = 0; i<listakategorija.length; i++){%>
+                          <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija2" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+                          <%}%>
+                        </select>
+                        <select class="select form-control-lg" id="sel3" name="selektor3">
+                          <option value="x" selected disabled>Odaberi treci interes</option>
+                          <%for(let i = 0; i<listakategorija.length; i++){%>
+                          <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija3" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+                          <%}%>
+                        </select>
+                      </div>
+                    </div>
+                    <div id="dodatne_info" style="display: none">
+                    <br>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input type="number" id="brtel" name="broj_telefona_unos" class="form-control" />
+                          <label class="form-label" for="form3Example1c">Broj telefona (Ne unosite crtice, već samo brojeve.)</label>
+                        </div>
+                      </div>
+
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <input type="text" id="adresa" name="adresa_unos" class="form-control" />
+                          <label class="form-label" for="form3Example1c">Adresa</label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <p>Već imate račun? <a href="/login">Prijavite se.</a></p>
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <button type="button" onclick="validacija()" class="btn btn-primary btn-lg">Registruj se</button>
+                    </div>
+                  </form>
+
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-7  align-items-center order-1 order-lg-2">
+
+                  <img src="/images/giTareOkrugli.png" class="img-fluid animate__animated animate__fadeInUp" alt="logo">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  </body>
+</html>

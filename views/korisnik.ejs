@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="/javascripts/obicniJs.js"></script>
+  <link rel='stylesheet' href='/stylesheets/obicniCSS.css' />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+  <link rel="stylesgeet" href="https://rawgit.com/creativetimofficial/material-kit/master/assets/css/material-kit.css">
+  <link rel="icon" href="/images/favicon.ico">
+
+  <title><%=title%></title>
+</head>
+
+<body class="profile-page">
+<nav class="navbar navbar-color-on-scroll navbar-transparent    fixed-top  navbar-expand-lg "  color-on-scroll="100"  id="sectionsNav">
+  <div class="container">
+    <div class="navbar-translate">
+      <a class="navbar-brand" href="/home"><img src="/images/giTareLogo.png" width="100px"> </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header header-filter"><img src="/images/naslovne/<%=nazivNaslovne%>" class="naslovna"></div>
+<div class="main main-raised">
+  <div class="profile-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 ml-auto mr-auto">
+          <div class="profile">
+            <div class="avatar">
+              <img src="/images/profilne/<%=nazivProfilne%>" alt="Circle Image" class="img-raised rounded-circle img-fluid pfp">
+            </div>
+            <div class="name">
+              <h3 class="title"><%=korisnik.nadimak%></h3>
+              <h4><%=korisnik.ime%> <%=korisnik.prezime%></h4>
+              <%if(korisnik.tip === 'Trgovac'){%>
+              <h5><%=korisnik.brtel%></h5>
+              <h5><%=korisnik.adresa%></h5>
+              <%}%>
+              <%if(korisnik.tip === 'Kupac'){%>
+                <h5>Interesi:</h5>
+                <h6><%=interesi[0]%></h6>
+                <h6><%=interesi[1]%></h6>
+                <h6><%=interesi[2]%></h6>
+              <%}%>
+              <br><br>
+              <h3><%=korisnik.tip%></h3>
+              <br><br>
+              <%if(kuki.status != 'Arhiviran'){%>
+              <a href="/poruke/<%=korisnik.id_korisnika%>" class="btn btn-primary" >Pošalji poruku</a>
+              <%}%>
+              <%if(korisnik.tip == 'Trgovac'){%>
+              <%if(!isNaN(prosjecnaOcjena)){%>
+              <p>Prosjecna recenzija korisnika: <%=prosjecnaOcjena.toFixed(1)%></p>
+              <%}%>
+              <%if(isNaN(prosjecnaOcjena)){%>
+                <p>Trgovac jos nema recenzija.</p>
+              <%}%>
+              <a href="/artikli/<%=korisnik.id_korisnika%>" class="btn btn-danger" >Artikli korisnika <%=korisnik.nadimak%></a>
+              <%}%>
+              <br><br>
+              <%if(kuki.tip == 'Administrator'){%>
+                <%if(korisnik.status != 'Blokiran' && korisnik.status != 'Arhiviran'){%>
+                <a href="/blokirajKorisnika/<%=korisnik.id_korisnika%>" class="btn btn-danger" >Blokiraj korisnika</a>
+                <a href="/arhivirajKorisnika/<%=korisnik.id_korisnika%>" class="btn btn-danger" >Arhiviraj korisnika</a>
+
+              <%}%>
+              <%if(kuki.tip == 'Administrator'){%>
+              <%if(korisnik.status == 'Arhiviran'){%>
+              <a href="/blokirajKorisnika/<%=korisnik.id_korisnika%>" class="btn btn-danger" >Blokiraj korisnika</a>
+              <a href="/odarhivirajKorisnika/<%=korisnik.id_korisnika%>" class="btn btn-success" >Ukloni korisnika iz arhive</a>
+              <%}%>
+              <%}%>
+                <%if(korisnik.status == 'Blokiran'){%>
+                  <h1 style="color: red;">Korisnik je blokiran</h1>
+                  <h2>Blokiranje ističe dana <%=dan_isteka%> u <%=vrijeme_isteka%>.</h2>
+                  <a href="/odblokirajKorisnika/<%=korisnik.id_korisnika%>" class="btn btn-success" >Odblokiraj korisnika</a>
+
+              <%}%>
+              <%}%>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
+</body>
+

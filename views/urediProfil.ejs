@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel='stylesheet' href='/stylesheets/styleUrediProfil.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="icon" href="/images/favicon.ico">
+    <script>
+      function isNumeric(num){
+        return !isNaN(num);
+      }
+      function provjeriTip(){
+        if ('<%=kuki.tip%>' === 'Trgovac') {
+          document.getElementById("dodatne_info").style.display = '';
+          document.getElementById("selektorInteresi").style.display = 'none';
+          return true;
+        }
+        else if('<%=kuki.tip%>' === 'Kupac'){
+          document.getElementById("dodatne_info").style.display = 'none';
+          document.getElementById("selektorInteresi").style.display = '';
+          return false;
+        }
+      }
+      function validacija(){
+        if(document.getElementById('ime').value == ''){
+          document.getElementById('ime').style.borderColor = 'red';
+          alert('Ime ne moze biti prazno!');
+        }
+        else if(document.getElementById('prezime').value == '') {
+          document.getElementById('prezime').style.borderColor = 'red';
+          alert('Prezime ne moze biti prazno!');
+        }
+        else if(document.getElementById('starasifra').value == '' && (document.getElementById('novasifra').value != '' || document.getElementById('novasifrap').value != '')){
+          document.getElementById('starasifra').style.borderColor = 'red';
+          alert('Unesite staru lozinku!');
+        }
+        else if(document.getElementById('starasifra').value != '<%=kuki.sifra%>' && (document.getElementById('novasifra').value != '' || document.getElementById('novasifrap').value != '') && (document.getElementById('novasifra').value == document.getElementById('novasifrap').value)){
+          document.getElementById('starasifra').style.borderColor = 'red';
+          alert('Stara lozinka neispravno unesena!');
+        }
+        else if(document.getElementById('novasifra').value != document.getElementById('novasifrap').value){
+          document.getElementById('novasifra').style.borderColor = 'red';
+          document.getElementById('novasifrap').style.borderColor = 'red';
+          alert('Pravilno unesite novu lozinku oba puta!');
+        }
+        else if(document.getElementById('novasifra').value.length < 8 && document.getElementById('novasifra').value.length > 0){
+          document.getElementById('novasifra').style.borderColor = 'red';
+          document.getElementById('novasifrap').style.borderColor = 'red';
+          alert('Lozinka mora biti duga barem 8 karaktera!');
+        }
+        else if('<%=kuki.tip%>' == 'Trgovac' && document.getElementById('brtel').value == ''){
+          document.getElementById('brtel').style.borderColor = 'red';
+          alert('Pravilno unesite broj telefona!');
+        }
+        else if('<%=kuki.tip%>' == 'Trgovac' && document.getElementById('adresa').value == ''){
+          document.getElementById('adresa').style.borderColor = 'red';
+          alert('Pravilno unesite adresu!');
+        }
+        else if('<%=kuki.tip%>' == 'Kupac' && (document.getElementById('sel1').value == document.getElementById('sel2').value || document.getElementById('sel1').value == document.getElementById('sel3').value || document.getElementById('sel2').value == document.getElementById('sel3').value)){
+          document.getElementById('adresa').style.borderColor = 'red';
+          alert('Pravilno unesite interese!');
+        }
+        else{
+          document.getElementById('urediForma').submit();
+        }
+
+      }
+    </script>
+  </head>
+  <body onload="provjeriTip()">
+  <div class="position-fixed top-0 start-0"><h5>Naslovna</h5><a href="/home"><img src="/images/nazad.png" width="50px"></a></div>
+  <form  action="/urediProfil/<%=kuki.id%>" method="post" id="urediForma" encType="multipart/form-data" name="urediForma">
+  <div class="container glavni rounded bg-white mb-5">
+    <div class="row">
+      <div class="col-md-3 border-right">
+        <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="/images/profilne/<%=kuki.naziv_profilne%>"><span class="font-weight-bold"><%=kuki.nadimak%></span><span class="text-black-50"><%=kuki.email%><br><span class="font-weight-bold"><%=kuki.tip%></span><span class="text-black-50"></span></span><span> </span></div>
+      </div>
+      <div class="col-md-5 border-right">
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-right">Postavke profila</h4>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6"><label class="labels">Ime</label><input type="text" id="ime" name="imeedit" class="form-control" placeholder="Ime" value="<%=kuki.ime%>"></div>
+            <div class="col-md-6"><label class="labels">Prezime</label><input type="text" id="prezime" name="prezimeedit" class="form-control" value="<%=kuki.prezime%>" placeholder="Prezime"></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12"><label class="labels">Želite promijeniti šifru?</label><input type="password" id="starasifra" name="staraLozinka" class="form-control" placeholder="Stara lozinka" ></div>
+            <div class="col-md-12"><label class="labels">Nova lozinka</label><input type="password" class="form-control" id="novasifra" name="novaLozinka" placeholder="Nova lozinka"></div>
+            <div class="col-md-12"><label class="labels">Ponovite novu lozinku</label><input type="password" class="form-control" id="novasifrap" name="novaLozinkaPon" placeholder="Ponovite novu lozinku"></div>
+          </div><br><label class="labels">Promijeni profilnu</label>
+          <div class="row mt-3">
+            <input name="fotka" id="fotka" type="file" />
+          </div>
+          <%if(kuki.tip === 'Kupac'){%>
+          <div class="row" id="selektorInteresi" style="display: none">
+            <div class="col-12">
+              <br>
+              <select class="select form-control-lg" id="sel1" name="selektor1">
+                <%for(let i = 0; i<listakategorija.length; i++){%>
+                <%if(listakategorija[i].naziv_podkategorije == interesi[0].naziv_podkategorije){%>
+                <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>" selected><%=listakategorija[i].naziv_podkategorije%></option>
+                <%}%>
+                <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+                <%}%>
+              </select>
+              <select class="select form-control-lg" id="sel2" name="selektor2">
+                <%for(let i = 0; i<listakategorija.length; i++){%>
+                  <%if(listakategorija[i].naziv_podkategorije == interesi[1].naziv_podkategorije){%>
+                    <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>" selected><%=listakategorija[i].naziv_podkategorije%></option>
+                <%}%>
+                <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija1" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+                <%}%>
+              </select>
+              <select class="select form-control-lg" id="sel3" name="selektor3">
+                <%for(let i = 0; i<listakategorija.length; i++){%>
+                <%if(listakategorija[i].naziv_podkategorije == interesi[2].naziv_podkategorije){%>
+                <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija2" name="<%=listakategorija[i]%>" selected><%=listakategorija[i].naziv_podkategorije%></option>
+                <%}%>
+                <option value="<%=listakategorija[i].id_podkategorije%>" id="opcija2" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_podkategorije%></option>
+                <%}%>
+              </select>
+              <br>
+            </div>
+          </div>
+          <%}%>
+          <div class="row mt-3 dodatne_info" id="dodatne_info" style="display: none">
+            <div class="col-md-12"><label class="labels">Adresa</label><input type="text" id="adresa" name="adresaedit" class="form-control" placeholder="Adresa" value="<%=kuki.adresa%>" ></div>
+            <div class="col-md-12"><label class="labels">Broj telefona</label><input type="number" class="form-control" id="brtel" name="brteledit" placeholder="Broj telefona" value="<%=kuki.brtel%>"></div>
+          </div>
+          <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="validacija()">Sačuvaj izmjene</button><br><br></div>
+        </div>
+    </div>
+      <div class="col-md-4">
+        <div class="p-3 py-5">
+          <br><br><br><br>
+          <img src="/images/1.jpg" class="img-fluid" alt="logo">
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

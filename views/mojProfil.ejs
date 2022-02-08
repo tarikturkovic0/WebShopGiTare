@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="/javascripts/obicniJs.js"></script>
+  <link rel='stylesheet' href='/stylesheets/obicniCSS.css' />
+  <script>
+    function predaj(){
+      if(document.getElementById("novanaslovna").value == "") {
+        alert('Niste odabrali novu sliku!');
+      }
+      else{
+        document.getElementById('forma').submit();
+      }
+    }
+  </script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+  <link rel="stylesgeet" href="https://rawgit.com/creativetimofficial/material-kit/master/assets/css/material-kit.css">
+  <link rel="icon" href="/images/favicon.ico">
+
+  <title><%=title%></title>
+</head>
+
+<body class="profile-page">
+<nav class="navbar navbar-color-on-scroll navbar-transparent    fixed-top  navbar-expand-lg "  color-on-scroll="100"  id="sectionsNav">
+  <div class="container">
+    <div class="navbar-translate">
+      <a class="navbar-brand" href="/home"><img src="/images/giTareLogo.png" width="100px"> </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header header-filter"><img src="/images/naslovne/<%=kuki.naziv_naslovne%>" class="naslovna"></div>
+<div class="main main-raised">
+  <div class="profile-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 ml-auto mr-auto">
+          <div class="profile">
+            <div class="avatar">
+              <img src="/images/profilne/<%=kuki.naziv_profilne%>" alt="Circle Image" class="img-raised rounded-circle img-fluid pfp">
+            </div>
+            <div class="name">
+              <h3 class="title"><%=kuki.nadimak%></h3>
+              <h4><%=kuki.ime%> <%=kuki.prezime%></h4>
+              <a href="/urediProfil/<%=kuki.id%>"><div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Uredi profil</button><br><br></div></a>
+
+              <%if(kuki.tip === 'Trgovac'){%>
+              <h5><%=kuki.brtel%></h5>
+              <h5><%=kuki.adresa%></h5>
+              <%}%>
+              <%if(kuki.tip === 'Kupac'){%>
+                <h5>Interesi:</h5>
+                <h6><%=interesi[0]%></h6>
+                <h6><%=interesi[1]%></h6>
+                <h6><%=interesi[2]%></h6>
+              <%}%>
+              <br><br>
+              <h3><%=kuki.tip%></h3>
+              <br><br>
+              <form enctype="multipart/form-data" name="forma" id="forma" method="post">
+              <label for="novanaslovna" class="custom-file-upload">
+                Promijeni naslovnu
+              </label>
+              <input name="novanaslovna" id="novanaslovna" type="file" required/>
+              <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="predaj()">Sačuvaj izmjene</button><br><br></div>
+              </form>
+              <%if(kuki.tip == 'Trgovac'){%>
+              <a href="/artikli/<%=kuki.id%>" class="btn btn-danger" >Moji artikli</a>
+              <%}%>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="description text-center">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
+</body>

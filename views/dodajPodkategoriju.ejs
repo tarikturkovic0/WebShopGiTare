@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/dodajArtikal.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="icon" href="/images/favicon.ico">
+    <script>
+
+      function validacija(){
+        if(document.getElementById('naziv').value == ''){
+          document.getElementById('naziv').style.borderColor = 'red';
+          alert('Naziv artikla ne može biti prazan!');
+        }
+        if(document.getElementById('naziv').length > 30){
+          document.getElementById('naziv').style.borderColor = 'red';
+          alert('Koristite kraci naziv artikla!');
+        }
+        else if(document.getElementById('selektorKategorije').value == 'x'){
+          document.getElementById('selektorKategorije').style.borderColor = 'red';
+          alert('Pravilno unesite kategoriju!');
+        }
+        else{
+          document.getElementById('formaArtikal').submit();
+        }
+      }
+
+    </script>
+  </head>
+  <body>
+
+
+  <form id="formaArtikal" action="/dodajPodkategoriju" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <fieldset>
+      <div style="text-align: center;"><h1>Dodaj podkategoriju</h1></div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="naziv">Naziv podkategorije *</label>
+        <div class="col-md-4">
+          <input id="naziv" name="nazivP" placeholder="Naziv podkategorije" class="form-control input-md" required type="text">
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="selektorKategorije">Kategorija *</label>
+        <div class="col-md-4">
+          <select class="select form-control" id="selektorKategorije" name="selektorKategorije">
+            <option value="x" selected disabled>Odaberite kategoriju vašeg artikla *</option>
+            <%for(let i = 0; i<listakategorija.length; i++){%>
+            <option value="<%=listakategorija[i].id_kategorije%>" id="opcija1" name="<%=listakategorija[i]%>"><%=listakategorija[i].naziv_kategorije%></option>
+            <%}%>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-4"><div style="text-align: right;">
+                <button id="dugme" name="dugme" onclick="validacija()" class="btn btn-primary">Dodaj podkategoriju</button>
+        </div>
+      </div>
+
+  </fieldset>
+  </form>
+  </body>
+</html>
